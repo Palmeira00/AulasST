@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Lotação do Hotel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://i.pinimg.com/originals/9d/42/b1/9d42b1779351931414dc45c2ac03aa4c.jpg') no-repeat center center;
+      background-size: cover;
+      color: white;
+    }
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 40px;
+      height: 100vh;
+    }
+    h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+    .lotacao {
+      font-size: 36px;
+      margin-top: 40px;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 2px solid white;
+      border-radius: 10px;
+      display: inline-block;
+    }
+    .ticker {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.7);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .ticker p {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll 25s linear infinite;
+      font-size: 24px;
+    }
+    @keyframes scroll {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1>Estado de Lotação</h1>
+    <div class="lotacao" id="infoLotacao">
+      A carregar dados...
+    </div>
+  </div>
+  <div class="ticker">
+    <p>Reserve já na receção ou através do site | Quartos com vista disponíveis | Wi-Fi gratuito em todo o hotel</p>
+  </div>
+
+  <script>
+    fetch('dados-lotacao.json')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('infoLotacao').innerHTML = `
+          ${data.estado} <br>
+          Quartos disponíveis: ${data.quartos_disponiveis} <br>
+          Última atualização: ${data.ultima_atualizacao}
+        `;
+      })
+      .catch(error => {
+        document.getElementById('infoLotacao').innerHTML = 'Erro ao carregar dados.';
+        console.error('Erro ao carregar JSON:', error);
+      });
+  </script>
+</body>
+</html>
